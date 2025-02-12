@@ -1,0 +1,31 @@
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 30px;
+}
+
+.fetchBtn {
+  margin-block: 20px;
+}
+
+.result {
+  display: flex;
+}
+
+.heroCard {
+  background-image: linear-gradient(rgb(81, 81, 206), black);
+  border-radius: 20px;
+  padding-bottom: 10px;
+  padding-top: 30px;
+  margin-inline: 15px;
+}
+
+.heroImg {
+  max-width: 120px;
+  border-radius: 50%;
+  margin-inline: 50px;
+  background-color: white;
+}
