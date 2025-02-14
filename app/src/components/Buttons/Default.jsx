@@ -1,12 +1,11 @@
-import { FaSearch } from "react-icons/fa";
-
-export function Button(props) {
+export function ButtonDefault(props) {
   const variantClasses = {
     primary: "bg-blue-500 text-white hover:bg-blue-600",
     secondary: "bg-gray-300 text-gray-800 hover:bg-gray-400",
     danger: "bg-red-500 text-white hover:bg-red-600",
     success: "bg-green-500 text-white hover:bg-green-600",
     disabled: "bg-gray-200 text-gray-400 cursor-not-allowed",
+    warning: "bg-yellow-500 text-white hover:bg-yellow-600",
   };
 
   const baseClasses =
@@ -18,8 +17,8 @@ export function Button(props) {
       disabled={props.disabled}
       onClick={props.onClick}
     >
+      <span className="mr-1">{props.icon}</span>
       {props.children}
-      <FaSearch className="ml-2" />
     </button>
   );
 }

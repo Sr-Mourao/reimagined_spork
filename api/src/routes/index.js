@@ -14,6 +14,14 @@ router.get("/heroes", async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
-})
+}).post("/heroes", async (req, res) => {
+    try {
+        const { name, imagem } = req.body;
+        const [rows] = await connection.query("INSERT INTO heroes (name, imagem) VALUES (?, ?)", [name, imagem]);
+        return res.json(rows);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
 
 export { router };
