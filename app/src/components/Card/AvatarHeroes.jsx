@@ -1,5 +1,4 @@
-import { EditButton } from "../Buttons/Edit";
-import { RemoveButton } from "../Buttons/Remove";
+import { ButtonAction } from "../Buttons/Actions";
 
 export function AvatarHeroes({ hero, onRemove, onEdit }) {
   return (
@@ -12,8 +11,8 @@ export function AvatarHeroes({ hero, onRemove, onEdit }) {
         />
       </div>
       <div className="absolute top-2 right-2 flex flex-col gap-2">
-        <RemoveButton onRemove={onRemove} />
-        <EditButton onEdit={onEdit} />
+        <ButtonAction variant="edit" onClick={onEdit} />
+        <ButtonAction variant="remove" onClick={onRemove} />
       </div>
       <p className="mt-3 text-gray-200 font-semibold">{hero.name}</p>
     </div>

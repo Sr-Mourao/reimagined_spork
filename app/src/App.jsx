@@ -11,7 +11,18 @@ const API = process.env.REACT_APP_ENDPOINT;
 function App() {
   const [heroes, setHeroes] = useState([]);
   const [visibleHeroes, setVisibleHeroes] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
+  /**
+   * Fetches heroes from the API and updates the state with the new data.
+   * - If no heroes are loaded, it fetches the data and sets the first hero as visible.
+   * - If heroes are already loaded, it progressively displays more heroes one by one.
+   *
+   * @async
+   * @function fetchAndShowHeroes
+   * @returns {Promise<void>} A promise that resolves when the heroes are fetched and state is updated.
+   * @throws {Error} Logs an error and displays an alert if the API request fails.
+   */
   const fetchAndShowHeroes = async () => {
     try {
       if (heroes.length === 0) {
@@ -22,12 +33,9 @@ function App() {
         setVisibleHeroes([...visibleHeroes, heroes[visibleHeroes.length]]);
       }
     } catch (error) {
-      console.error("Erro ao buscar heróis:", error);
+      alert(`Erro ao buscar heróis: ${error}`);
+      console.error(error);
     }
-  };
-
-  const cleanHooksVisibleHeroes = () => {
-    setVisibleHeroes([]);
   };
 
   const handlerEditHero = (id) => {
@@ -36,6 +44,13 @@ function App() {
 
   const handlerRemoveHero = (item) => {
     console.log(item);
+  };
+
+  const handlerOpenModal = () => setOpenModal(true);
+  const handlerCloseModal = () => setOpenModal(false);
+
+  const cleanHooksVisibleHeroes = () => {
+    setVisibleHeroes([]);
   };
 
   const allHeroesVisible =
@@ -59,16 +74,16 @@ function App() {
           <AvatarHeroes
             key={hero.id}
             hero={hero}
-            onEdit={handlerEditHero(hero)}
-            onRemove={handlerRemoveHero(hero.id)}
+            onEdit={() => handlerEditHero(hero)}
+            onRemove={() => handlerRemoveHero(hero.id)}
           />
         ))}
       </div>
 
       {visibleHeroes.length > 0 && (
-        <div className="flex">
+        <div className="flex justify-between w-3/12 mt-5">
           <ButtonDefault
-            onClick={() => {}}
+            onClick={handlerOpenModal}
             variant="primary"
             icon={<FaPlus size={15} />}
           >
@@ -83,7 +98,9 @@ function App() {
           </ButtonDefault>
         </div>
       )}
-      <ModalDefault />
+      {openModal && (
+        <ModalDefault title="Novo Herói" onClose={handlerCloseModal} />
+      )}
     </div>
   );
 }

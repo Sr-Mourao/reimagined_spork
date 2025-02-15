@@ -9,7 +9,7 @@ export function ButtonDefault(props) {
   };
 
   const baseClasses =
-    "flex items-center px-4 py-2 m-5 rounded-lg font-semibold transition-all duration-200 focus:outline-none";
+    "flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 focus:outline-none";
 
   return (
     <button
