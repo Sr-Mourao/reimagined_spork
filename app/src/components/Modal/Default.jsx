@@ -1,25 +1,48 @@
 import { ButtonDefault } from "../Buttons/Default";
 import { ButtonAction } from "../Buttons/Actions";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaSave } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const API = process.env.REACT_APP_ENDPOINT;
 
 export function ModalDefault(props) {
+  const [formData, setFormData] = useState({
+    name: "",
+    imagem: "",
+  });
+
+  useEffect(() => {
+    if (props.hero) {
+      setFormData({ name: props.hero.name, imagem: props.hero.imagem });
+    }
+  }, [props.hero]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handlerSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
-    const newHero = {
-      name: formData.get("name"),
-      imagem: formData.get("imagem"),
-    };
     try {
-      const { data } = await axios.post(`${API}/heroes`, newHero);
-      props.onSuccess(data);
+      let result;
+      if (props.hero) {
+        const { data } = await axios.put(`${API}/heroes`, {
+          id: props.hero.id,
+          ...formData,
+        });
+        result = data;
+      } else {
+        const { data } = await axios.post(`${API}/heroes`, formData);
+        result = data;
+      }
+      props.onSuccess(result);
       props.onClose();
     } catch (error) {
-      alert(`Erro ao adicionar herói: ${error}`);
+      alert(
+        `Erro ao ${props.hero ? "atualizar" : "adicionar"} herói: ${error}`
+      );
       console.error(error);
     }
   };
@@ -51,6 +74,8 @@ export function ModalDefault(props) {
                 </label>
                 <input
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
                   placeholder="Digite o nome do herói"
                   required
@@ -62,6 +87,8 @@ export function ModalDefault(props) {
                 </label>
                 <input
                   name="imagem"
+                  value={formData.imagem}
+                  onChange={handleChange}
                   placeholder="https://urldoavatar.com"
                   className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
                   required
@@ -72,9 +99,11 @@ export function ModalDefault(props) {
                 <ButtonDefault
                   type="submit"
                   variant="primary"
-                  icon={<FaPlus size={15} />}
+                  icon={
+                    props.hero ? <FaSave size={15} /> : <FaPlus size={15} />
+                  }
                 >
-                  Adicionar Novo Herói
+                  {props.hero ? "Salvar Alterações" : "Adicionar Novo Herói"}
                 </ButtonDefault>
               </div>
             </form>

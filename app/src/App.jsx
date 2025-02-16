@@ -12,6 +12,8 @@ function App() {
   const [heroes, setHeroes] = useState([]);
   const [visibleHeroes, setVisibleHeroes] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [selectedHero, setSelectedHero] = useState(null);
 
   /**
    * Fetches heroes from the API and updates the state with the new data.
@@ -43,12 +45,16 @@ function App() {
     }
   };
 
-  const handlerEditHero = async (item) => {
-    console.log(item);
-  };
-
   const handleHeroAdded = (newHero) => {
     setHeroes((prevHeroes) => [...prevHeroes, newHero]);
+  };
+
+  const handleHeroUpdated = (updatedHero) => {
+    const updatedHeroesSelected = visibleHeroes.map((hero) =>
+      hero.id === updatedHero.id ? { ...hero, ...updatedHero } : hero
+    );
+    setHeroes(updatedHeroesSelected);
+    setVisibleHeroes(updatedHeroesSelected);
   };
 
   const handlerRemoveHero = async (id) => {
@@ -65,6 +71,12 @@ function App() {
 
   const handlerOpenModal = () => setOpenModal(true);
   const handlerCloseModal = () => setOpenModal(false);
+
+  const handlerOpenModalUpdate = async (item) => {
+    setSelectedHero(item);
+    setOpenModalUpdate(true);
+  };
+  const handlerCloseModalUpdate = () => setOpenModalUpdate(false);
 
   const cleanHooksVisibleHeroes = () => {
     setVisibleHeroes([]);
@@ -91,7 +103,7 @@ function App() {
           <AvatarHeroes
             key={hero.id}
             hero={hero}
-            onEdit={() => handlerEditHero(hero)}
+            onEdit={() => handlerOpenModalUpdate(hero)}
             onRemove={() => handlerRemoveHero(hero.id)}
           />
         ))}
@@ -120,6 +132,14 @@ function App() {
           title="Cadastrar novo herói"
           onClose={handlerCloseModal}
           onSuccess={handleHeroAdded}
+        />
+      )}
+      {openModalUpdate && (
+        <ModalDefault
+          title="Editar herói"
+          hero={selectedHero}
+          onClose={handlerCloseModalUpdate}
+          onSuccess={handleHeroUpdated}
         />
       )}
     </div>
