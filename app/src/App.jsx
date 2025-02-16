@@ -27,6 +27,11 @@ function App() {
     try {
       if (heroes.length === 0) {
         const { data } = await axios.get(`${API}/heroes`);
+        if (data.length === 0) {
+          alert("Nenhum herói encontrado.");
+          handlerOpenModal();
+          return;
+        }
         setHeroes(data);
         setVisibleHeroes([data[0]]);
       } else if (visibleHeroes.length < heroes.length) {
@@ -38,12 +43,24 @@ function App() {
     }
   };
 
-  const handlerEditHero = (id) => {
-    console.log(id);
+  const handlerEditHero = async (item) => {
+    console.log(item);
   };
 
-  const handlerRemoveHero = (item) => {
-    console.log(item);
+  const handleHeroAdded = (newHero) => {
+    setHeroes((prevHeroes) => [...prevHeroes, newHero]);
+  };
+
+  const handlerRemoveHero = async (id) => {
+    try {
+      await axios.delete(`${API}/heroes`, { data: { id } });
+      const updatedHeroes = visibleHeroes.filter((hero) => hero.id !== id);
+      setHeroes(updatedHeroes);
+      setVisibleHeroes(updatedHeroes);
+    } catch (error) {
+      console.error(error);
+      alert(`Erro ao deletar herói: ${error}`);
+    }
   };
 
   const handlerOpenModal = () => setOpenModal(true);
@@ -99,7 +116,11 @@ function App() {
         </div>
       )}
       {openModal && (
-        <ModalDefault title="Novo Herói" onClose={handlerCloseModal} />
+        <ModalDefault
+          title="Cadastrar novo herói"
+          onClose={handlerCloseModal}
+          onSuccess={handleHeroAdded}
+        />
       )}
     </div>
   );

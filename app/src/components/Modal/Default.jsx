@@ -10,12 +10,13 @@ export function ModalDefault(props) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const data = {
+    const newHero = {
       name: formData.get("name"),
       imagem: formData.get("imagem"),
     };
     try {
-      await axios.post(`${API}/heroes`, data);
+      const { data } = await axios.post(`${API}/heroes`, newHero);
+      props.onSuccess(data);
       props.onClose();
     } catch (error) {
       alert(`Erro ao adicionar herói: ${error}`);
