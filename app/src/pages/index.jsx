@@ -1,10 +1,10 @@
-import { AvatarHeroes } from "./components/Card/AvatarHeroes";
-import { ButtonDefault } from "./components/Buttons/Default";
-import { ModalDefault } from "./components/Modal/Default";
+import { AvatarHeroes } from "../components/Card/AvatarHeroes";
+import { ButtonDefault } from "../components/Buttons/Default";
+import { ModalDefault } from "../components/Modal/Default";
 import { FaSearch, FaPlus, FaRedo } from "react-icons/fa";
 import { useState } from "react";
 import axios from "axios";
-import "./App.css";
+import "../App.css";
 
 const API = process.env.REACT_APP_ENDPOINT;
 
@@ -86,7 +86,7 @@ function App() {
     visibleHeroes.length === heroes.length && heroes.length > 0;
 
   return (
-    <div className="flex items-center flex-col text-center p-10 bg-gray-900 rounded-lg shadow-lg w-8/12 h-[calc(100vh-100px)] mt-8 ml-auto mr-auto">
+    <>
       <h2 className="text-4xl mt-8 font-bold text-white mb-6">Heróis</h2>
 
       <ButtonDefault
@@ -142,7 +142,7 @@ function App() {
           onSuccess={handleHeroUpdated}
         />
       )}
-    </div>
+    </>
   );
 }
 
