@@ -6,6 +6,7 @@ export function ButtonDefault(props) {
     success: "bg-green-500 text-white hover:bg-green-600",
     disabled: "bg-gray-200 text-gray-400 cursor-not-allowed",
     warning: "bg-yellow-500 text-white hover:bg-yellow-600",
+    favorites: "bg-pink-500 text-white hover:bg-pink-600",
   };
 
   const baseClasses =

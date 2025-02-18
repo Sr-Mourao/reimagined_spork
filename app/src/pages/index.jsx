@@ -1,7 +1,8 @@
+import { FaSearch, FaPlus, FaRedo, FaHeart } from "react-icons/fa";
 import { AvatarHeroes } from "../components/Card/AvatarHeroes";
 import { ButtonDefault } from "../components/Buttons/Default";
 import { ModalDefault } from "../components/Modal/Default";
-import { FaSearch, FaPlus, FaRedo } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import "../App.css";
@@ -14,6 +15,8 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [selectedHero, setSelectedHero] = useState(null);
+
+  const navigate = useNavigate();
 
   /**
    * Fetches heroes from the API and updates the state with the new data.
@@ -82,6 +85,8 @@ function App() {
     setVisibleHeroes([]);
   };
 
+  const redirectToFavoritos = () => navigate("/favoritos");
+
   const allHeroesVisible =
     visibleHeroes.length === heroes.length && heroes.length > 0;
 
@@ -110,7 +115,7 @@ function App() {
       </div>
 
       {visibleHeroes.length > 0 && (
-        <div className="flex justify-between w-3/12 mt-5">
+        <div className="flex justify-between w-2/4 mt-5">
           <ButtonDefault
             onClick={handlerOpenModal}
             variant="primary"
@@ -124,6 +129,13 @@ function App() {
             icon={<FaRedo size={15} />}
           >
             Limpar
+          </ButtonDefault>
+          <ButtonDefault
+            onClick={redirectToFavoritos}
+            variant="favorites"
+            icon={<FaHeart size={15} />}
+          >
+            Favoritos
           </ButtonDefault>
         </div>
       )}
